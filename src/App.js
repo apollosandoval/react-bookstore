@@ -25,9 +25,6 @@ class App extends Component {
     fetch(`http://localhost:8082/api/books/cart/add/${item.id}`, {
       method: "PATCH"
     }).then( res => {
-      this.setState({
-        products: ['a', 'b']
-      })
         this.setState(state => ({
           products: state.products.reduce((acc, cv) => {
             var thisItem = cv
@@ -36,9 +33,6 @@ class App extends Component {
             }
             return [...acc, thisItem]
           }, [])
-        }))
-        this.setState(state => ({
-          products: [...state.products, {id: 12, name: "Gone..."}]
         }))
     })
   }
