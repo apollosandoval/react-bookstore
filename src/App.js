@@ -9,20 +9,19 @@ import Filter from './components/Filter';
 
 class App extends Component {
   state = {
-    products: []
+    products: [],
+    visible: []
   }
 
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/books');
     const json = await response.json();
-    this.setState({products: json});
+    this.setState({products: json, visible: json});
   }
 
   booksInCart = () => this.state.products.filter(book => book.inCart)
 
   addToCart = (item) => {
-    console.dir(item);
-    console.log(this.state.products);
     fetch(`http://localhost:8082/api/books/cart/add/${item.id}`, {
       method: "PATCH"
     }).then( res => {
@@ -36,6 +35,21 @@ class App extends Component {
           }, [])
         }))
     })
+  }
+
+  filterBooks = (searchTerm, filterToApply) => {
+    // console.log(
+    //   this.state.products.filter(book => book[filterToApply].includes(searchTerm))
+    // )
+    if (searchTerm) {
+      this.setState(state => ({
+        visible: state.products.filter(product => product[filterToApply].includes(searchTerm))
+      }))
+    } else {
+      this.setState(state => ({
+        visible: state.products
+      }))
+    }
   }
 
   render() {
@@ -52,13 +66,13 @@ class App extends Component {
               </Col>
               <Col>
                 {/* Filter Input Component */}
-                <Filter />
+                <Filter onFilter={ this.filterBooks } />
               </Col>
             </Row>
             <Row>
               <Col xs="12">
                 {/* Insert BookList Component */}
-                <BookList books={this.state.products} onAddToCart={ this.addToCart}/>
+                <BookList books={this.state.visible} onAddToCart={this.addToCart}/>
               </Col>
             </Row>
               
