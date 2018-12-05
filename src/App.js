@@ -7,19 +7,40 @@ import ShoppingCart from './components/ShoppingCart';
 // import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    products: []
+  }
 
-    this.state = {
-      products: [
-        {id: 1, properties: {title: 'Moby-Dick'}},
-        {id: 2, properties: {title: 'Frankenstein'}},
-        {id: 3, properties: {title: 'Wuthering Heights'}}
-      ],
-      cart: [
-        {id: 1, properties: {title: 'Moby-Dick'}}
-      ]
-    }
+  async componentDidMount() {
+    const response = await fetch('http://localhost:8082/api/books');
+    const json = await response.json();
+    this.setState({products: json});
+  }
+
+  booksInCart = () => this.state.products.filter(book => book.inCart)
+
+  addToCart = (item) => {
+    console.dir(item);
+    console.log(this.state.products);
+    fetch(`http://localhost:8082/api/books/cart/add/${item.id}`, {
+      method: "PATCH"
+    }).then( res => {
+      this.setState({
+        products: ['a', 'b']
+      })
+        this.setState(state => ({
+          products: state.products.reduce((acc, cv) => {
+            var thisItem = cv
+            if (cv.id === item.id) {
+              thisItem.inCart = true
+            }
+            return [...acc, thisItem]
+          }, [])
+        }))
+        this.setState(state => ({
+          products: [...state.products, {id: 12, name: "Gone..."}]
+        }))
+    })
   }
 
   render() {
@@ -38,7 +59,7 @@ class App extends Component {
             <Row>
               <Col xs="12">
                 {/* Insert BookList Component */}
-                <BookList books={this.state.products} />
+                <BookList books={this.state.products} onAddToCart={ this.addToCart}/>
               </Col>
             </Row>
               
@@ -52,7 +73,7 @@ class App extends Component {
               <Row>
                 <Col xs="12">
                   {/* Insert Shopping Cart Component */}
-                  <ShoppingCart items={this.state.cart} />
+                  <ShoppingCart items={this.booksInCart()} />
                 </Col>
               </Row>
             </Col>

@@ -1,11 +1,28 @@
 import React from 'react';
-import { ListGroupItem } from 'reactstrap';
+import { ListGroupItem, Row, Col, Button } from 'reactstrap';
 
-const BookListItem = ({book}) => {
-    console.log(book);
-    return (
-        <ListGroupItem>{book.properties.title}</ListGroupItem>
-    )
+class BookListItem extends React.Component {
+
+    handleClick = () => {
+        this.props.onAddToCart(this.props.book)
+    }
+
+    render() {
+        let {book} = this.props
+
+        return (
+            <ListGroupItem>
+                <Row>
+                    <Col xs="9">
+                        {book.title}
+                    </Col>
+                    <Col>
+                        <Button onClick={ this.handleClick }>Add to cart</Button>
+                    </Col>
+                </Row>
+            </ListGroupItem>
+        )
+    }
 }
 
 export default BookListItem;
