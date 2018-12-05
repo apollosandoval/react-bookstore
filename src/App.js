@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import TopNav from './components/TopNav';
 import BookList from './components/BookList';
 import ShoppingCart from './components/ShoppingCart';
+import Filter from './components/Filter';
 // import logo from './logo.svg';
 // import './App.css';
 
@@ -45,9 +46,13 @@ class App extends Component {
         <Container>
           <Row>
             <Col xs="8">
-            <Row>
-              <Col xs="12">
+            <Row className="align-items-center">
+              <Col xs="6">
                 <h1>List of Books</h1>
+              </Col>
+              <Col>
+                {/* Filter Input Component */}
+                <Filter />
               </Col>
             </Row>
             <Row>
