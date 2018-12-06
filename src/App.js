@@ -37,6 +37,22 @@ class App extends Component {
     })
   }
 
+  deleteFromCart = (item) => {
+    console.log(item);
+    fetch(`http://localhost:8082/api/books/cart/remove/${item.id}`, {
+      method: "PATCH"
+    }).then( res => {
+      this.setState( state => ({
+        products: state.products.reduce((acc, cv) => {
+          if (cv.id === item.id) {
+            cv.inCart = false
+          }
+          return [...acc, cv]
+        }, [])
+      }))
+    })
+  }
+
   filterBooks = (searchTerm, filterToApply) => {
     // console.log(
     //   this.state.products.filter(book => book[filterToApply].includes(searchTerm))
@@ -86,7 +102,7 @@ class App extends Component {
               <Row>
                 <Col xs="12">
                   {/* Insert Shopping Cart Component */}
-                  <ShoppingCart items={this.booksInCart()} />
+                  <ShoppingCart items={this.booksInCart()} onDeleteFromCart={this.deleteFromCart} />
                 </Col>
               </Row>
             </Col>

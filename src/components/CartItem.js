@@ -1,10 +1,23 @@
 import React from 'react';
-import { ListGroupItem } from 'reactstrap';
+import { ListGroupItem, Row, Col, Button } from 'reactstrap';
 
-const CartItem = ({cartItem}) => {
+const CartItem = ({cartItem, onDeleteFromCart}) => {
+
+    let handleClick = () => {
+        onDeleteFromCart(cartItem)
+    }
     
     return (
-        <ListGroupItem>{cartItem.title}</ListGroupItem>
+        <ListGroupItem>
+            <Row>
+                <Col xs="9">
+                    {cartItem.title}
+                </Col>
+                <Col>
+                    <Button onClick={handleClick}>Remove</Button>
+                </Col>
+            </Row>
+        </ListGroupItem>
     )
 }
 

@@ -21,24 +21,26 @@ class Filter extends React.Component {
     // }
     state = {
         dropdownOpen: false,
-        searchTermValue: undefined
+        searchTermValue: undefined,
+        searchType: 'title'
     }
     
 
     toggleDropDown = () => {
-        console.log(this);
+
         this.setState({
             dropdownOpen: !this.state.dropdownOpen
         })
     }
 
     handleClick = (event) => {
-        console.log(event.target.id);
-        this.props.onFilter(this.state.searchTermValue, event.target.id);
+        this.setState({searchType: event.target.id});
+        this.props.onFilter(this.state.searchTermValue, this.state.searchType);
     }
 
     handleChange = (event) => {
-        this.setState({searchTermValue: event.target.value})
+        this.setState({searchTermValue: event.target.value});
+        this.props.onFilter(event.target.value, this.state.searchType);
     }
 
     render() {
