@@ -14,7 +14,8 @@ class BookListItem extends React.Component {
             <ListGroupItem>
                 <Row>
                     <Col xs="9">
-                        {book.title}
+                        <Row>{book.title}</Row>
+                        <Row>By: {book.author}</Row>
                     </Col>
                     <Col>
                         <Button onClick={ this.handleClick }>Add to cart</Button>
